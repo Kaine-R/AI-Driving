@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PylintConfigService">
+    <option name="customPylintPath" value="C:\Users\Kaine's PC\AppData\Local\Programs\Python\Python37-32\Scripts\pylint.exe" />
+    <option name="pylintArguments" value="-d c0103 -d E1101" />
+  </component>
+</project>

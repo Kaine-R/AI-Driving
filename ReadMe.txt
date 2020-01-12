@@ -1,0 +1,2 @@
+Using Pycharm to run Python 3.6 with various libraries, Tensorflow and Pygame, I was able to create a Machine Learning programs to let a car learn how to transverse a race course.
+Going through Pycharm's interceptor settings I included Pygame, TensorFlow, TensorFlow CPU, TensorFlow GPU, TensorFlow Estamator, TensorFlow TensorBoard, Numpy, MatPolyLib. This being the First time that I've messed around with TensorFlow so I might have included more file thatn i really needed but this was to insure that the program ran correctly.
