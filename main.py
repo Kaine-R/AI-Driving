@@ -132,90 +132,29 @@ def notmain():
 
 
 def test():
-    # xTrain = tf.constant([
-    #     1, 2,3,4,5,6,7,8,9,7,8,5,4,2,3,6
-    # ])
-    # yTrain = tf.constant([
-    #     -1, -2, -3, -4, -5, -6, -7, -8, -9, -7, -8, -5, -4, -2, -3, -6
-    # ])
-
-    # xTrain = tf.constant([
-    #     (1, 2), (4, 5), (9, 10)
-    # ])
-    # yTrain = tf.constant([
-    #     3, 9, 19
-    # ])
-    # read = model.predict([[
-    #     (1, 2), (3, 5)
-    # ]])
-
-    # layer0 = tf.keras.layers.Dense(units=2, input_shape=[1,])
-
-    # model = tf.keras.Sequential([
-    #     layer0,
-    # ])
-    # model.compile(loss="mean_squared_error", optimizer=tf.keras.optimizers.Adam(0.1))
-    # trainModel = model.fit(xTrain, yTrain, steps_per_epoch=1, epochs=1000, verbose=False)
-
-    # read = model.predict([
-    #     5, 10
-    # ])
-
-    # xTrain = tf.constant(
-    #     testData.testData()
-    # )
-    # yTrain = tf.constant(
-    #     testData.testAnswers()
-    # )
-
     xTrain = tf.constant(
         testData.trainingData()
     )
     yTrain = tf.constant(
         testData.trainingAnswers()
     )
-
-    # xTrain = tf.constant([nodeInputs])
-    # yTrain = tf.constant([scorePoints])
-
-    # print(xTrain)
-
-    layer0 = tf.keras.layers.Dense(units=1, input_shape=(80,))
-    dropout = tf.keras.layers.Dropout(0.1)
-    layer1 = tf.keras.layers.Dense(units=1)
-    layer2 = tf.keras.layers.Dense(units=1)
-
-    model = tf.keras.Sequential([
-        layer0,
-        # layer1,
-        # dropout
-
-    ])
-
-    # optimizer=tf.keras.optimizers.Adam(0.1)  tf.keras.optimizers.Adagrad(2.5)
-    # mean_squared_error
-
+    model = tf.keras.Sequential([tf.keras.layers.Dense(units=1, input_shape=(80,))])
     model.compile(loss="mean_squared_logarithmic_error", optimizer=tf.keras.optimizers.SGD(0.1))
 
     trainModel = model.fit(xTrain, yTrain, steps_per_epoch=1, epochs=1000, verbose=False)
 
-    read = model.predict([
-        testData.testQuestions()
-    ])
-    actu = testData.testAnswers()
+    prediction = model.predict([testData.testQuestions()])
+    actual = testData.testAnswers()
 
     total = []
-    low = []
-    med = []
-    high = []
     print(len(testData.trainingData()))
-    for num, p in enumerate(read, 0):
-        total.append((p, actu[num]))
+    for num, p in enumerate(prediction, 0):
+        total.append((p, actual[num]))
     total = sorted(total, key=lambda x: x[0])
     sectionSize = int(len(total)/3)
     low = total[0: sectionSize]
     med = total[sectionSize: sectionSize * 2]
-    high = total[sectionSize * 2: ]
+    high = total[sectionSize * 2:]
 
     print("LOW NUMBERS!")
     for k in low:
@@ -230,54 +169,7 @@ def test():
         print("Expected: " + str(k[0]) + ", Actual: " + str(k[1]))
 
     model.evaluate([testData.testQuestions()], [testData.testAnswers()], verbose=1)
-    # print(read)
-
-def oldTesting():
-    xTrain1 = [*range(500)]
-    yTrain1 = []
-    for i in range(500):
-        even = 1 if i % 2 == 0 else 0
-        yTrain1.append(even)
-    xTest1, yTest1 = [-1, 0], [-1, 1]
-
-    xTrain, yTrain = tf.constant(xTrain1), tf.constant(yTrain1)
-    xTest, yTest = tf.constant([-1, 0]), tf.constant([-1, 1])
-
-    layer0 = tf.keras.layers.Dense(units=1, input_shape=[1])
-
-    model = tf.keras.Sequential([
-        layer0
-    ])
-
-    model.compile(loss="mse", optimizer=tf.keras.optimizers.Adam(0.1))
-
-    trainModel = model.fit(xTrain, yTrain, steps_per_epoch=1, epochs=1000, shuffle=True, verbose=False)
-
-    num = []
-    winrate = []
-    for i in range(200):
-        num.append(np.round(np.random.normal(0, 200), 0))
-    attempts = np.around(model.predict([num]), 0)
-    for j in range(len(attempts)):
-        if attempts[j][0] == np.round((num[j] + 1) % 2, 0):
-            winrate.append(True)
-        else:
-            winrate.append(False)
-        attempts[j] = 0 if attempts[j] < 0 else attempts[j]
-        attempts[j] = 1 if attempts[j] > 1 else attempts[j]
-        print("Test: {}, Number: {} Result: {} Expected: {} || {}".format(j, num[j], attempts[j][0],
-                                                                          round((num[j] + 1) % 2, 0), winrate[j]))
-    percent = 0
-    for k in winrate:
-        if k == True:
-            percent += 1
-    print(percent / len(num) * 100)
-
-    # pylab.xlabel("Epoch Number")
-    # pylab.ylabel("Loss Num")
-    # pylab.plot(trainModel.history['mean_squared_error'], label='train')
-    # pylab.show()
-
+    # print(prediction)
 
 # notmain()
 test()
